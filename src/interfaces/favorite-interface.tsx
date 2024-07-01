@@ -1,5 +1,5 @@
 export default interface FavoriteInterface {
-  favorites: string | undefined[];
+  favorites: string[];
   addFavorite: (movie: string | undefined) => void;
   removeFavorite: (movie: string | undefined) => void;
 }

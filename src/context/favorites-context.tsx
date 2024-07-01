@@ -1,8 +1,8 @@
-import { ReactNode, createContext, useState } from "react";
-import FavoriteInterface from "../interfaces/favorite-interface";
+import { ReactNode, createContext, useState } from 'react';
+import FavoriteInterface from '../interfaces/favorite-interface';
 
 const FavoritesContext = createContext<FavoriteInterface | undefined>(
-  undefined,
+  undefined
 );
 
 export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
@@ -10,14 +10,14 @@ export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
 
   const addFavorite = (movie: string | undefined) => {
     if (movie === undefined) {
-      throw new Error("useUserContext must be used with a DashboardContext");
+      throw new Error('useUserContext must be used with a DashboardContext');
     }
     setFavorites([...favorites, movie]);
   };
 
   const removeFavorite = (movie: string | undefined) => {
     if (movie === undefined) {
-      throw new Error("useUserContext must be used with a DashboardContext");
+      throw new Error('useUserContext must be used with a DashboardContext');
     }
     setFavorites(favorites.filter((fav: string) => fav != movie));
   };

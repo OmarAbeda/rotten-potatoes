@@ -54,7 +54,7 @@ export async function getTopRated() {
   return movies;
 }
 
-export async function getFavorites(favorites: string | undefined[]) {
+export async function getFavorites(favorites: string[] | undefined[]) {
   const movies = [];
 
   for (let i = 0; i < favorites.length; i++) {
