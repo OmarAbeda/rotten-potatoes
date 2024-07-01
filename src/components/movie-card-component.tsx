@@ -1,11 +1,11 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import MovieInterface from '../interfaces/movie-interface';
-import { Button, Modal } from '@mui/material';
-import { useState } from 'react';
-import MovieModalComponent from './movie-modal-compnent';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import MovieInterface from "../interfaces/movie-interface";
+import { Button, Modal } from "@mui/material";
+import { useState } from "react";
+import MovieModalComponent from "./movie-modal-compnent";
 
 const MovieCard: React.FC<MovieInterface> = ({
   Title,
@@ -18,14 +18,21 @@ const MovieCard: React.FC<MovieInterface> = ({
   const handleClose = () => setOpen(false);
 
   return (
-    <Card sx={{ width: 300, height: 370 }}>
+    <Card
+      sx={{
+        width: 300,
+        height: 370,
+        bgcolor: "grey.800",
+        borderRadius: "16px",
+      }}
+    >
       <CardMedia
         component="img"
-        sx={{ height: 180, objectFit: 'contain' }}
+        sx={{ height: 180, objectFit: "contain" }}
         image={Poster}
         title={Title}
       />
-      <CardContent>
+      <CardContent sx={{ color: "white" }}>
         <Typography gutterBottom variant="h5" component="div">
           {Title}
         </Typography>

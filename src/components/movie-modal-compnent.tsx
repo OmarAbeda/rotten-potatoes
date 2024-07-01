@@ -1,23 +1,26 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { CardMedia, CardContent, Button } from '@mui/material';
-import { useState, useEffect, useContext } from 'react';
-import ModelInterface from '../interfaces/modal-interface';
-import { getMovie } from '../api/api';
-import MovieInfoInterface from '../interfaces/movie-info-interface';
-import FavoritesContext from '../context/favorites-context';
-import FavoriteInterface from '../interfaces/favorite-interface';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ClearIcon from "@mui/icons-material/Clear";
+import { CardMedia, CardContent, Button, Snackbar } from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import ModelInterface from "../interfaces/modal-interface";
+import { getMovie } from "../api/api";
+import MovieInfoInterface from "../interfaces/movie-info-interface";
+import FavoritesContext from "../context/favorites-context";
+import FavoriteInterface from "../interfaces/favorite-interface";
 
 const style = {
-  margin: 'auto',
-  padding: '20px',
-  height: 650,
+  margin: "auto",
+  padding: "16px",
+  maxHeight: "90vh",
   width: 800,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  backgroundColor: "grey.800",
+  color: "white",
+  borderRadius: "16px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
 };
 
 const MovieModalComponent: React.FC<ModelInterface> = ({
@@ -25,8 +28,10 @@ const MovieModalComponent: React.FC<ModelInterface> = ({
   Favorited,
 }) => {
   const [movie, setMovie] = useState<MovieInfoInterface>();
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
   const { addFavorite, removeFavorite } = useContext(
-    FavoritesContext
+    FavoritesContext,
   ) as FavoriteInterface;
 
   useEffect(() => {
@@ -35,66 +40,99 @@ const MovieModalComponent: React.FC<ModelInterface> = ({
         const data = await getMovie(imdbID);
         setMovie(data);
       } catch (error) {
-        throw new Error('Movie not found');
+        throw new Error("Movie not found");
       }
     };
     fetchMovies();
   }, [imdbID]);
 
+  const handleAddFavorite = (title: string | undefined) => {
+    addFavorite(title);
+    setSnackbarMessage(`Added "${title}" to Favorites`);
+    setSnackbarOpen(true);
+  };
+
+  const handleRemoveFavorite = (title: string | undefined) => {
+    removeFavorite(title);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
-    <Box sx={style} overflow="scroll">
+    <Box sx={style}>
       <Typography gutterBottom variant="h5" component="div">
         {movie?.Title}
       </Typography>
 
-      <CardContent>
+      <CardContent sx={{ color: "white" }}>
         <CardMedia
           component="img"
-          sx={{ height: 150, objectFit: 'contain' }}
+          sx={{ height: 150, objectFit: "contain" }}
           image={movie?.Poster}
           title={movie?.Title}
         />
         <br></br>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2">
           Imdb Rating: {movie?.imdbRating} Metascore: {movie?.Metascore}
         </Typography>
         <br />
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2">
           Director: {movie?.Drirector} Writer: {movie?.Writer}
         </Typography>
         <br />
-        <Typography variant="body2" color="text.secondary">
-          Actors: {movie?.Actors}
-        </Typography>
+        <Typography variant="body2">Actors: {movie?.Actors}</Typography>
         <br />
-        <Typography variant="body2" color="text.secondary">
-          BoxOffice: {movie?.BoxOffice}
-        </Typography>
+        <Typography variant="body2">BoxOffice: {movie?.BoxOffice}</Typography>
         <br />
-        <Typography variant="body2" color="text.secondary">
-          Awards: {movie?.Awards}
-        </Typography>
+        <Typography variant="body2">Awards: {movie?.Awards}</Typography>
         <br />
-        <Typography variant="body2" color="text.secondary">
-          Summary: {movie?.Plot}
-        </Typography>
+        <Typography variant="body2">Summary: {movie?.Plot}</Typography>
       </CardContent>
 
       <br />
       <div>
         {Favorited ? (
           <Button
-            variant="outlined"
-            onClick={() => removeFavorite(movie?.Title)}
+            variant="contained"
+            disableElevation
+            size="small"
+            style={{ backgroundColor: "#880808", color: "#fff" }}
+            endIcon={<ClearIcon />}
+            className="px-2 py-1 text-sm"
+            onClick={() => handleRemoveFavorite(movie?.Title)}
           >
             Remove From Favorites
           </Button>
         ) : (
-          <Button variant="outlined" onClick={() => addFavorite(movie?.Title)}>
-            Add to Favorites
+          <Button
+            onClick={() => handleAddFavorite(movie?.Title)}
+            variant="contained"
+            disableElevation
+            size="small"
+            style={{ backgroundColor: "#e91e63", color: "#fff" }}
+            endIcon={<FavoriteIcon />}
+            className="px-2 py-1 text-sm"
+          >
+            Add To Favorites
           </Button>
         )}
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        ContentProps={{
+          style: {
+            backgroundColor: "#43a047",
+            color: "white",
+            textAlign: "center",
+          },
+        }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </Box>
   );
 };
