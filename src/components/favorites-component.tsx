@@ -23,30 +23,43 @@ const FavoritesComponent: React.FC = () => {
     fetchMovies();
   }, [favorites]);
 
+  const checkMovies = () => {
+    if (movies.length > 0) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
-      <Grid container justifyContent="center" spacing={2} sx={{ padding: 2 }}>
-        {movies.map((movie) => (
-          <Grid
-            key={movie.imdbID}
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            style={{ display: "flex" }}
-          >
-            <MovieCard
-              Title={movie.Title}
-              Year={movie.Year}
-              imdbID={movie.imdbID}
-              Type={movie.Type}
-              Poster={movie.Poster}
-              Page={0}
-              Favorite={true}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      {checkMovies() ? (
+        <Grid container justifyContent="center" spacing={2} sx={{ padding: 2 }}>
+          {movies.map((movie) => (
+            <Grid
+              key={movie.imdbID}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              style={{ display: "flex" }}
+            >
+              <MovieCard
+                Title={movie.Title}
+                Year={movie.Year}
+                imdbID={movie.imdbID}
+                Type={movie.Type}
+                Poster={movie.Poster}
+                Page={0}
+                Favorite={true}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <h1 className="mb-4 text-center text-4xl font-bold text-green-900">
+          NO FAVORITES
+        </h1>
+      )}
       <br></br>
     </>
   );

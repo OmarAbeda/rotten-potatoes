@@ -2,57 +2,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import StarIcon from "@mui/icons-material/Star";
 import { Button } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import MovieComponent from "../components/movie-component";
 import TopMoviesComponent from "../components/top-movies-component";
 import FavoritesComponent from "../components/favorites-component";
 
-// const Search = styled("div")(({ theme }) => ({
-//   position: "relative",
-//   borderRadius: theme.shape.borderRadius,
-//   //backgroundColor: alpha(theme.palette.common.black, 0.15),
-//   backgroundColor: alpha(theme.palette.common.black, 0.25),
-//   "&:hover": {
-//     backgroundColor: alpha(theme.palette.common.black, 0.25),
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: "100%",
-//   [theme.breakpoints.up("sm")]: {
-//     marginLeft: theme.spacing(3),
-//     width: "auto",
-//   },
-// }));
-
-// const SearchIconWrapper = styled("div")(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: "100%",
-//   position: "absolute",
-//   pointerEvents: "none",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-// }));
-
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: "inherit",
-//   "& .MuiInputBase-input": {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create("width"),
-//     width: "100%",
-//     [theme.breakpoints.up("md")]: {
-//       width: "20ch",
-//     },
-//   },
-// }));
-
 const Mainpage: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [movie, setMovie] = useState<string>("");
   const [searched, setSearched] = useState<boolean>(false);
+  const [top, setTop] = useState<boolean>(true);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
 
@@ -81,16 +42,27 @@ const Mainpage: React.FC = () => {
     setMovie(search);
     // setPage(page);
     setSearched(true);
+    setTop(false);
   };
 
   const handleFavorites = () => {
     setFavorite(true);
     setSearched(false);
+    setTop(false);
+  };
+
+  const handleTop = () => {
+    setFavorite(false);
+    setSearched(false);
+    setTop(true);
   };
 
   return (
     <>
-      <div>
+      <div className="h-full w-full">
+        <h1 className="mb-4 text-center text-4xl font-bold text-green-900">
+          Rotten Potatoes
+        </h1>
         <div className="flex items-center space-x-2">
           <div className="relative flex-grow">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -114,17 +86,34 @@ const Mainpage: React.FC = () => {
           >
             Search
           </Button>
-          <Button
-            variant="contained"
-            disableElevation
-            size="small"
-            style={{ backgroundColor: "#e91e63", color: "#fff" }}
-            endIcon={<FavoriteIcon />}
-            onClick={handleFavorites}
-            className="px-2 py-1 text-sm"
-          >
-            Go to favorites
-          </Button>
+        </div>
+        <br />
+        <div className="flex justify-center">
+          <div className="flex space-x-4">
+            <Button
+              variant="contained"
+              disableElevation
+              size="small"
+              style={{ backgroundColor: "#AA6C39", color: "#fff" }}
+              endIcon={<StarIcon />}
+              onClick={handleTop}
+              className="px-2 py-1 text-sm"
+            >
+              Top Movies
+            </Button>
+
+            <Button
+              variant="contained"
+              disableElevation
+              size="small"
+              style={{ backgroundColor: "#e91e63", color: "#fff" }}
+              endIcon={<FavoriteIcon />}
+              onClick={handleFavorites}
+              className="px-2 py-1 text-sm"
+            >
+              Go to favorites
+            </Button>
+          </div>
         </div>
 
         <br></br>
@@ -135,9 +124,9 @@ const Mainpage: React.FC = () => {
         <FavoritesComponent></FavoritesComponent>
       ) : searched ? (
         <MovieComponent param={movie} page={page}></MovieComponent>
-      ) : (
+      ) : top ? (
         <TopMoviesComponent></TopMoviesComponent>
-      )}
+      ) : null}
 
       {searched ? (
         <div className="flex justify-center space-x-2">

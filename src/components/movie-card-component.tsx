@@ -4,16 +4,14 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import MovieInterface from "../interfaces/movie-interface";
 import { Button, Modal } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import MovieModalComponent from "./movie-modal-compnent";
+import FavoriteInterface from "../interfaces/favorite-interface";
+import FavoritesContext from "../context/favorites-context";
 
-const MovieCard: React.FC<MovieInterface> = ({
-  Title,
-  imdbID,
-  Poster,
-  Favorite,
-}) => {
+const MovieCard: React.FC<MovieInterface> = ({ Title, imdbID, Poster }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const { checkFavorite } = useContext(FavoritesContext) as FavoriteInterface;
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -21,6 +19,7 @@ const MovieCard: React.FC<MovieInterface> = ({
     <Card
       sx={{
         width: 300,
+        minWidth: 200,
         height: 370,
         bgcolor: "grey.800",
         borderRadius: "16px",
@@ -49,7 +48,7 @@ const MovieCard: React.FC<MovieInterface> = ({
         >
           <MovieModalComponent
             imdbID={imdbID}
-            Favorited={Favorite}
+            Favorited={checkFavorite(Title)}
           ></MovieModalComponent>
         </Modal>
       </div>

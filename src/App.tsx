@@ -13,8 +13,10 @@ function App() {
   return (
     <>
       <div className="min-h-screen bg-black text-gray-500">
-        <div className="container mx-auto p-4">
-          <Mainpage></Mainpage>
+        <div className="flex h-full min-h-screen flex-col">
+          <div className="container mx-auto h-full flex-grow p-4">
+            <Mainpage></Mainpage>
+          </div>
         </div>
       </div>
     </>

@@ -23,29 +23,35 @@ const MovieComponent: React.FC<SearchParameter> = ({ param, page }) => {
 
   return (
     <>
-      <Grid container justifyContent="center" spacing={2} sx={{ padding: 2 }}>
-        {movies.map((movie) => (
-          <Grid
-            key={movie.imdbID}
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            style={{ display: "flex" }}
-          >
-            <MovieCard
-              Title={movie.Title}
-              Year={movie.Year}
-              imdbID={movie.imdbID}
-              Type={movie.Type}
-              Poster={movie.Poster}
-              Page={page}
-              Favorite={false}
-            />
-          </Grid>
-        ))}
-      </Grid>
-      <br></br>
+      {movies ? (
+        <Grid container justifyContent="center" spacing={2} sx={{ padding: 2 }}>
+          {movies.map((movie) => (
+            <Grid
+              key={movie.imdbID}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              style={{ display: "flex" }}
+            >
+              <MovieCard
+                Title={movie.Title}
+                Year={movie.Year}
+                imdbID={movie.imdbID}
+                Type={movie.Type}
+                Poster={movie.Poster}
+                Page={page}
+                Favorite={false}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <h1 className="mb-4 text-center text-4xl font-bold text-green-900">
+          NO MOVIES FOUND
+        </h1>
+      )}
+      <br />
     </>
   );
 };

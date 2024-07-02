@@ -5,7 +5,7 @@ export default interface MovieInfoInterface {
   Released: Date;
   Runtime: string;
   Genre: string;
-  Drirector: string;
+  Director: string;
   Writer: string;
   Actors: string;
   Plot: string;
